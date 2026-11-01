@@ -1,0 +1,18 @@
+--- a/src/Input.cpp
++++ b/src/Input.cpp
+@@ -2,6 +2,7 @@
+ // Copyright (c) 2021-2025 MPM-Geomechanics Development Team
+ 
+ #include "Input.h"
++#include "InputSchema.h"
+ #include "Solver/SolverExplicit.h"
+ #include "Solver/SolverExplicitTwoPhaseUSL.h"
+ #include "Materials/Elastic.h"
+@@ -101,6 +102,7 @@
+ 			
+ 			// initialize the json structure
+ 			i >> inputFile;	
++			InputSchema::validate(inputFile);
+ 		}
+ 		else
+ 			throw(0);

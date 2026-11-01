@@ -1,0 +1,34 @@
+Entrada compartida para MPM
+
+input-schema.json define los campos, tipos, opciones y limites estructurales
+Lo usa el formulario y tambien el adaptador de lectura C++
+value e initial son valores iniciales del formulario, NO defaults del lector
+
+Integracion en la version publica 6ed2aa8
+
+1. Guarde input-schema.json como archivo comun del proyecto
+2. Copie InputSchema.h e InputSchema.generated.h a inc/
+3. Revise y aplique Input.cpp.patch en una copia de su repositorio
+4. Compile normalmente con C++17 y ejecute sus pruebas de lectura
+
+Al modificar el archivo comun, regenere el header antes de compilar
+python generate_header.py input-schema.json inc/InputSchema.generated.h --web input-schema.js
+Publique input-schema.js junto al formulario y recompile el lector
+El formulario lo carga al abrirse, sin editar su codigo JavaScript
+La descarga desde el formulario tambien usa esa misma definicion cargada
+No edite el header generado a mano
+
+El parche agrega una inclusion y una llamada tras leer el JSON
+No cambia los getters, sus defaults, materiales, integradores ni solver
+Los campos ausentes siguen siendo tratados por el lector original
+Los campos presentes se comprueban por tipo, dimensiones, opciones y limites
+Las colecciones nativas como arreglos y el alias materials se conservan
+
+Algunos archivos antes tolerados pueden rechazarse antes si incumplen estos
+limites estructurales. No se afirma compatibilidad con todo input historico
+Las referencias entre materiales/cuerpos, archivos externos y otras reglas
+especiales siguen requiriendo las comprobaciones correspondientes del lector
+
+Agregar un campo al esquema genera su control y su comprobacion estructural
+NO implementa una funcion fisica nueva: el motor tiene que utilizar esa variable
+Este adaptador fue preparado y probado en copia, no incorporado a su rama privada

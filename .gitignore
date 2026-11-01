@@ -1,0 +1,5 @@
+node_modules/
+dist/
+app/input-builder/dist/
+test-output/
+*.log

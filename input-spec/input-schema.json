@@ -1,0 +1,2070 @@
+{
+  "schema": "mpm-input-definitions/1",
+  "version": 1,
+  "sourceCommit": "6ed2aa869726178234caa97f231cf6cf4344157b",
+  "description": "Shared form and structural input contract. value and initial are form presets, not native reader defaults. Missing fields remain governed by original C++ getters.",
+  "sections": {
+    "calculation": {
+      "kind": "object",
+      "label": "Cálculo",
+      "fields": {
+        "time": {
+          "kind": "number",
+          "label": "Duración [s]",
+          "value": 0.02,
+          "exclusiveMin": 0,
+          "translations": {
+            "en": "Duration [s]",
+            "pt": "Duração [s]"
+          }
+        },
+        "time_step": {
+          "kind": "number",
+          "label": "Paso temporal [s] · 0: automático",
+          "value": 0,
+          "min": 0,
+          "translations": {
+            "en": "Time step [s] · 0: automatic",
+            "pt": "Passo de tempo [s] · 0: automático"
+          }
+        },
+        "critical_time_step_multiplier": {
+          "kind": "number",
+          "label": "Factor de paso crítico",
+          "value": 0.1,
+          "exclusiveMin": 0,
+          "max": 1,
+          "optional": true,
+          "translations": {
+            "en": "Critical time step factor",
+            "pt": "Fator de passo crítico"
+          }
+        },
+        "stress_scheme_update": {
+          "kind": "choice",
+          "label": "Esquema de actualización",
+          "value": "USL",
+          "choices": [
+            "USL",
+            "MUSL"
+          ],
+          "translations": {
+            "en": "Update scheme",
+            "pt": "Esquema de atualização"
+          }
+        },
+        "shape_function": {
+          "kind": "choice",
+          "label": "Interpolación",
+          "value": "GIMP",
+          "choices": [
+            "GIMP",
+            "linear"
+          ],
+          "translations": {
+            "en": "Interpolation",
+            "pt": "Interpolação"
+          }
+        },
+        "n_phases": {
+          "kind": "choice",
+          "label": "Número de fases",
+          "value": 1,
+          "choices": [
+            1,
+            2
+          ],
+          "translations": {
+            "en": "Number of phases",
+            "pt": "Número de fases"
+          }
+        },
+        "n_threads": {
+          "kind": "integer",
+          "label": "Hilos de cálculo",
+          "value": 1,
+          "min": 1,
+          "translations": {
+            "en": "Computation threads",
+            "pt": "Threads de cálculo"
+          }
+        },
+        "gravity": {
+          "kind": "vector",
+          "label": "Gravedad [m/s²]",
+          "value": [
+            0,
+            0,
+            -9.81
+          ],
+          "translations": {
+            "en": "Gravity [m/s²]",
+            "pt": "Gravidade [m/s²]"
+          }
+        },
+        "damping": {
+          "kind": "object",
+          "label": "Amortiguamiento",
+          "fields": {
+            "type": {
+              "kind": "choice",
+              "label": "Tipo",
+              "value": "none",
+              "choices": [
+                "none",
+                "local",
+                "kinetic"
+              ],
+              "translations": {
+                "en": "Type",
+                "pt": "Tipo"
+              }
+            },
+            "value": {
+              "kind": "number",
+              "label": "Coeficiente",
+              "value": 0,
+              "min": 0,
+              "optional": true,
+              "translations": {
+                "en": "Coefficient",
+                "pt": "Coeficiente"
+              }
+            },
+            "alpha": {
+              "kind": "number",
+              "label": "Coeficiente α · alternativa a value",
+              "value": 0,
+              "min": 0,
+              "optional": true,
+              "translations": {
+                "en": "Coefficient α · alternative to value",
+                "pt": "Coeficiente α · alternativa a value"
+              }
+            }
+          },
+          "optional": true,
+          "translations": {
+            "en": "Damping",
+            "pt": "Amortecimento"
+          }
+        }
+      },
+      "translations": {
+        "en": "Calculation",
+        "pt": "Cálculo"
+      }
+    },
+    "mesh": {
+      "kind": "object",
+      "label": "Malla",
+      "fields": {
+        "mesh": {
+          "kind": "object",
+          "label": "Malla de fondo",
+          "fields": {
+            "origin": {
+              "kind": "vector",
+              "label": "Origen [m]",
+              "value": [
+                0,
+                0,
+                0
+              ],
+              "translations": {
+                "en": "Origin [m]",
+                "pt": "Origem [m]"
+              }
+            },
+            "cells_dimension": {
+              "kind": "vector",
+              "label": "Dimensión de celda [m]",
+              "value": [
+                0.25,
+                0.25,
+                0.25
+              ],
+              "exclusiveMin": 0,
+              "translations": {
+                "en": "Cell dimensions [m]",
+                "pt": "Dimensões da célula [m]"
+              }
+            },
+            "cells_number": {
+              "kind": "vector",
+              "label": "Celdas por dirección",
+              "value": [
+                8,
+                8,
+                8
+              ],
+              "integer": true,
+              "min": 1,
+              "translations": {
+                "en": "Cells per direction",
+                "pt": "Células por direção"
+              }
+            },
+            "boundary_conditions": {
+              "kind": "object",
+              "label": "Restricciones del sólido",
+              "fields": {
+                "plane_X0": {
+                  "kind": "choice",
+                  "label": "Plano X0",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane X0",
+                    "pt": "Plano X0"
+                  }
+                },
+                "plane_Y0": {
+                  "kind": "choice",
+                  "label": "Plano Y0",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Y0",
+                    "pt": "Plano Y0"
+                  }
+                },
+                "plane_Z0": {
+                  "kind": "choice",
+                  "label": "Plano Z0",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Z0",
+                    "pt": "Plano Z0"
+                  }
+                },
+                "plane_Xn": {
+                  "kind": "choice",
+                  "label": "Plano Xn",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Xn",
+                    "pt": "Plano Xn"
+                  }
+                },
+                "plane_Yn": {
+                  "kind": "choice",
+                  "label": "Plano Yn",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Yn",
+                    "pt": "Plano Yn"
+                  }
+                },
+                "plane_Zn": {
+                  "kind": "choice",
+                  "label": "Plano Zn",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Zn",
+                    "pt": "Plano Zn"
+                  }
+                }
+              },
+              "translations": {
+                "en": "Solid constraints",
+                "pt": "Restrições do sólido"
+              }
+            },
+            "boundary_conditions_fluid": {
+              "kind": "object",
+              "label": "Restricciones del fluido",
+              "fields": {
+                "plane_X0": {
+                  "kind": "choice",
+                  "label": "Plano X0",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane X0",
+                    "pt": "Plano X0"
+                  }
+                },
+                "plane_Y0": {
+                  "kind": "choice",
+                  "label": "Plano Y0",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Y0",
+                    "pt": "Plano Y0"
+                  }
+                },
+                "plane_Z0": {
+                  "kind": "choice",
+                  "label": "Plano Z0",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Z0",
+                    "pt": "Plano Z0"
+                  }
+                },
+                "plane_Xn": {
+                  "kind": "choice",
+                  "label": "Plano Xn",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Xn",
+                    "pt": "Plano Xn"
+                  }
+                },
+                "plane_Yn": {
+                  "kind": "choice",
+                  "label": "Plano Yn",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Yn",
+                    "pt": "Plano Yn"
+                  }
+                },
+                "plane_Zn": {
+                  "kind": "choice",
+                  "label": "Plano Zn",
+                  "value": "sliding",
+                  "choices": [
+                    "sliding",
+                    "fixed",
+                    "free"
+                  ],
+                  "translations": {
+                    "en": "Plane Zn",
+                    "pt": "Plano Zn"
+                  }
+                }
+              },
+              "optional": true,
+              "phase": 2,
+              "translations": {
+                "en": "Fluid constraints",
+                "pt": "Restrições do fluido"
+              }
+            }
+          },
+          "translations": {
+            "en": "Background mesh",
+            "pt": "Malha de fundo"
+          }
+        }
+      },
+      "translations": {
+        "en": "Mesh",
+        "pt": "Malha"
+      }
+    },
+    "materials": {
+      "kind": "object",
+      "label": "Materiales",
+      "fields": {
+        "material": {
+          "kind": "map",
+          "label": "Materiales",
+          "item": {
+            "kind": "object",
+            "label": "Material",
+            "fields": {
+              "type": {
+                "kind": "choice",
+                "label": "Modelo",
+                "value": "elastic",
+                "choices": [
+                  "elastic",
+                  "mohr-coulomb",
+                  "newtonian"
+                ],
+                "translations": {
+                  "en": "Model",
+                  "pt": "Modelo"
+                }
+              },
+              "id": {
+                "kind": "integer",
+                "label": "Identificador",
+                "value": 1,
+                "min": 1,
+                "translations": {
+                  "en": "Identifier",
+                  "pt": "Identificador"
+                }
+              },
+              "density_fluid": {
+                "kind": "number",
+                "label": "Densidad del fluido [kg/m³]",
+                "value": 1000,
+                "exclusiveMin": 0,
+                "optional": true,
+                "phase": 2,
+                "translations": {
+                  "en": "Fluid density [kg/m³]",
+                  "pt": "Densidade do fluido [kg/m³]"
+                }
+              },
+              "porosity": {
+                "kind": "number",
+                "label": "Porosidad",
+                "value": 0.3,
+                "exclusiveMin": 0,
+                "exclusiveMax": 1,
+                "optional": true,
+                "phase": 2,
+                "translations": {
+                  "en": "Porosity",
+                  "pt": "Porosidade"
+                }
+              },
+              "bulk_fluid": {
+                "kind": "number",
+                "label": "Módulo volumétrico del fluido [Pa]",
+                "value": 2000000000,
+                "exclusiveMin": 0,
+                "optional": true,
+                "phase": 2,
+                "translations": {
+                  "en": "Fluid bulk modulus [Pa]",
+                  "pt": "Módulo volumétrico do fluido [Pa]"
+                }
+              },
+              "hydraulic_conductivity": {
+                "kind": "vector",
+                "label": "Conductividad hidráulica [m/s]",
+                "value": [
+                  0.001,
+                  0.001,
+                  0.001
+                ],
+                "min": 0,
+                "optional": true,
+                "phase": 2,
+                "translations": {
+                  "en": "Hydraulic conductivity [m/s]",
+                  "pt": "Condutividade hidráulica [m/s]"
+                }
+              }
+            },
+            "variants": {
+              "elastic": {
+                "young": {
+                  "kind": "number",
+                  "label": "Módulo de Young [Pa]",
+                  "value": 1000000,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Young's modulus [Pa]",
+                    "pt": "Módulo de Young [Pa]"
+                  }
+                },
+                "poisson": {
+                  "kind": "number",
+                  "label": "Coeficiente de Poisson",
+                  "value": 0.25,
+                  "exclusiveMin": -1,
+                  "exclusiveMax": 0.5,
+                  "translations": {
+                    "en": "Poisson's ratio",
+                    "pt": "Coeficiente de Poisson"
+                  }
+                },
+                "density": {
+                  "kind": "number",
+                  "label": "Densidad [kg/m³]",
+                  "value": 1800,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Density [kg/m³]",
+                    "pt": "Densidade [kg/m³]"
+                  }
+                }
+              },
+              "mohr-coulomb": {
+                "young": {
+                  "kind": "number",
+                  "label": "Módulo de Young [Pa]",
+                  "value": 1000000,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Young's modulus [Pa]",
+                    "pt": "Módulo de Young [Pa]"
+                  }
+                },
+                "poisson": {
+                  "kind": "number",
+                  "label": "Coeficiente de Poisson",
+                  "value": 0.25,
+                  "exclusiveMin": -1,
+                  "exclusiveMax": 0.5,
+                  "translations": {
+                    "en": "Poisson's ratio",
+                    "pt": "Coeficiente de Poisson"
+                  }
+                },
+                "density": {
+                  "kind": "number",
+                  "label": "Densidad [kg/m³]",
+                  "value": 1800,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Density [kg/m³]",
+                    "pt": "Densidade [kg/m³]"
+                  }
+                },
+                "cohesion": {
+                  "kind": "number",
+                  "label": "Cohesión [Pa]",
+                  "value": 1000,
+                  "min": 0,
+                  "translations": {
+                    "en": "Cohesion [Pa]",
+                    "pt": "Coesão [Pa]"
+                  }
+                },
+                "friction": {
+                  "kind": "number",
+                  "label": "Ángulo de fricción [°]",
+                  "value": 30,
+                  "min": 0,
+                  "exclusiveMax": 90,
+                  "translations": {
+                    "en": "Friction angle [°]",
+                    "pt": "Ângulo de atrito [°]"
+                  }
+                },
+                "dilation": {
+                  "kind": "number",
+                  "label": "Ángulo de dilatancia [°]",
+                  "value": 5,
+                  "min": 0,
+                  "exclusiveMax": 90,
+                  "optional": true,
+                  "translations": {
+                    "en": "Dilatancy angle [°]",
+                    "pt": "Ângulo de dilatância [°]"
+                  }
+                },
+                "tensile": {
+                  "kind": "number",
+                  "label": "Resistencia a tracción [Pa]",
+                  "value": 100,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Tensile strength [Pa]",
+                    "pt": "Resistência à tração [Pa]"
+                  }
+                },
+                "su_vertical_stress": {
+                  "kind": "number",
+                  "label": "Factor de resistencia no drenada",
+                  "value": 0,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Undrained strength factor",
+                    "pt": "Fator de resistência não drenada"
+                  }
+                },
+                "softening": {
+                  "kind": "choice",
+                  "label": "Ablandamiento",
+                  "value": "exponential",
+                  "choices": [
+                    "exponential"
+                  ],
+                  "optional": true,
+                  "translations": {
+                    "en": "Softening",
+                    "pt": "Amolecimento"
+                  }
+                },
+                "softening.exponential.eta": {
+                  "kind": "number",
+                  "label": "Parámetro exponencial η",
+                  "value": 1,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Exponential parameter η",
+                    "pt": "Parâmetro exponencial η"
+                  }
+                },
+                "softening.friction.active": {
+                  "kind": "boolean",
+                  "label": "Ablandamiento de fricción",
+                  "value": false,
+                  "optional": true,
+                  "translations": {
+                    "en": "Friction softening",
+                    "pt": "Amolecimento do atrito"
+                  }
+                },
+                "softening.friction.residual": {
+                  "kind": "number",
+                  "label": "Valor residual · friction",
+                  "value": 0,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Residual value · friction",
+                    "pt": "Valor residual · friction"
+                  }
+                },
+                "softening.cohesion.active": {
+                  "kind": "boolean",
+                  "label": "Ablandamiento de cohesión",
+                  "value": false,
+                  "optional": true,
+                  "translations": {
+                    "en": "Cohesion softening",
+                    "pt": "Amolecimento da coesão"
+                  }
+                },
+                "softening.cohesion.residual": {
+                  "kind": "number",
+                  "label": "Valor residual · cohesion",
+                  "value": 0,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Residual value · cohesion",
+                    "pt": "Valor residual · cohesion"
+                  }
+                },
+                "softening.tensile.active": {
+                  "kind": "boolean",
+                  "label": "Ablandamiento de tracción",
+                  "value": false,
+                  "optional": true,
+                  "translations": {
+                    "en": "Tensile softening",
+                    "pt": "Amolecimento da tração"
+                  }
+                },
+                "softening.tensile.residual": {
+                  "kind": "number",
+                  "label": "Valor residual · tensile",
+                  "value": 0,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Residual value · tensile",
+                    "pt": "Valor residual · tensile"
+                  }
+                },
+                "softening.dilation.active": {
+                  "kind": "boolean",
+                  "label": "Ablandamiento de dilatancia",
+                  "value": false,
+                  "optional": true,
+                  "translations": {
+                    "en": "Dilatancy softening",
+                    "pt": "Amolecimento da dilatância"
+                  }
+                },
+                "softening.dilation.residual": {
+                  "kind": "number",
+                  "label": "Valor residual · dilation",
+                  "value": 0,
+                  "min": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Residual value · dilation",
+                    "pt": "Valor residual · dilation"
+                  }
+                }
+              },
+              "newtonian": {
+                "density": {
+                  "kind": "number",
+                  "label": "Densidad [kg/m³]",
+                  "value": 1800,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Density [kg/m³]",
+                    "pt": "Densidade [kg/m³]"
+                  }
+                },
+                "viscosity": {
+                  "kind": "number",
+                  "label": "Viscosidad dinámica [Pa·s]",
+                  "value": 0.001,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Dynamic viscosity [Pa·s]",
+                    "pt": "Viscosidade dinâmica [Pa·s]"
+                  }
+                },
+                "bulk": {
+                  "kind": "number",
+                  "label": "Módulo volumétrico [Pa]",
+                  "value": 2000000000,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Bulk modulus [Pa]",
+                    "pt": "Módulo volumétrico [Pa]"
+                  }
+                }
+              }
+            },
+            "translations": {
+              "en": "Material",
+              "pt": "Material"
+            }
+          },
+          "minItems": 1,
+          "prefix": "material",
+          "translations": {
+            "en": "Materials",
+            "pt": "Materiais"
+          }
+        }
+      },
+      "translations": {
+        "en": "Materials",
+        "pt": "Materiais"
+      }
+    },
+    "bodies": {
+      "kind": "object",
+      "label": "Geometría",
+      "fields": {
+        "body": {
+          "kind": "map",
+          "label": "Cuerpos",
+          "item": {
+            "kind": "object",
+            "label": "Cuerpo",
+            "fields": {
+              "type": {
+                "kind": "choice",
+                "label": "Geometría",
+                "value": "cuboid",
+                "choices": [
+                  "cuboid",
+                  "sphere",
+                  "polygon_2d",
+                  "particles",
+                  "particles_list",
+                  "particles_from_file",
+                  "gmsh"
+                ],
+                "translations": {
+                  "en": "Geometry",
+                  "pt": "Geometria"
+                }
+              },
+              "active": {
+                "kind": "boolean",
+                "label": "Activo",
+                "value": true,
+                "optional": true,
+                "translations": {
+                  "en": "Active",
+                  "pt": "Ativo"
+                }
+              }
+            },
+            "variants": {
+              "cuboid": {
+                "point_p1": {
+                  "kind": "vector",
+                  "label": "Vértice mínimo [m]",
+                  "value": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "translations": {
+                    "en": "Minimum corner [m]",
+                    "pt": "Vértice mínimo [m]"
+                  }
+                },
+                "point_p2": {
+                  "kind": "vector",
+                  "label": "Vértice máximo [m]",
+                  "value": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "translations": {
+                    "en": "Maximum corner [m]",
+                    "pt": "Vértice máximo [m]"
+                  }
+                },
+                "material_id": {
+                  "kind": "integer",
+                  "label": "Material",
+                  "value": 1,
+                  "min": 1,
+                  "reference": "material",
+                  "translations": {
+                    "en": "Material",
+                    "pt": "Material"
+                  }
+                },
+                "initial_velocity": {
+                  "kind": "vector",
+                  "label": "Velocidad inicial [m/s]",
+                  "value": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "optional": true,
+                  "translations": {
+                    "en": "Initial velocity [m/s]",
+                    "pt": "Velocidade inicial [m/s]"
+                  }
+                }
+              },
+              "sphere": {
+                "center": {
+                  "kind": "vector",
+                  "label": "Centro [m]",
+                  "value": [
+                    0.5,
+                    0.5,
+                    0.5
+                  ],
+                  "translations": {
+                    "en": "Centre [m]",
+                    "pt": "Centro [m]"
+                  }
+                },
+                "diameter": {
+                  "kind": "number",
+                  "label": "Diámetro [m]",
+                  "value": 1,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Diameter [m]",
+                    "pt": "Diâmetro [m]"
+                  }
+                },
+                "material_id": {
+                  "kind": "integer",
+                  "label": "Material",
+                  "value": 1,
+                  "min": 1,
+                  "reference": "material",
+                  "translations": {
+                    "en": "Material",
+                    "pt": "Material"
+                  }
+                },
+                "initial_velocity": {
+                  "kind": "vector",
+                  "label": "Velocidad inicial [m/s]",
+                  "value": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "optional": true,
+                  "translations": {
+                    "en": "Initial velocity [m/s]",
+                    "pt": "Velocidade inicial [m/s]"
+                  }
+                },
+                "particles_per_direction": {
+                  "kind": "vector",
+                  "label": "Partículas por dirección",
+                  "value": [
+                    2,
+                    2,
+                    2
+                  ],
+                  "integer": true,
+                  "min": 1,
+                  "optional": true,
+                  "translations": {
+                    "en": "Particles per direction",
+                    "pt": "Partículas por direção"
+                  }
+                }
+              },
+              "polygon_2d": {
+                "material_id": {
+                  "kind": "integer",
+                  "label": "Material",
+                  "value": 1,
+                  "min": 1,
+                  "reference": "material",
+                  "translations": {
+                    "en": "Material",
+                    "pt": "Material"
+                  }
+                },
+                "points": {
+                  "kind": "list",
+                  "label": "Vértices del polígono [m]",
+                  "item": {
+                    "kind": "vector",
+                    "label": "Punto",
+                    "value": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "translations": {
+                      "en": "Point",
+                      "pt": "Ponto"
+                    }
+                  },
+                  "minItems": 3,
+                  "initial": [
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      0,
+                      1
+                    ],
+                    [
+                      0,
+                      0,
+                      1
+                    ]
+                  ],
+                  "translations": {
+                    "en": "Polygon vertices [m]",
+                    "pt": "Vértices do polígono [m]"
+                  }
+                },
+                "extrude_direction": {
+                  "kind": "choice",
+                  "label": "Dirección de extrusión",
+                  "value": "y",
+                  "choices": [
+                    "x",
+                    "y",
+                    "z"
+                  ],
+                  "translations": {
+                    "en": "Extrusion direction",
+                    "pt": "Direção de extrusão"
+                  }
+                },
+                "extrude_displacement": {
+                  "kind": "number",
+                  "label": "Espesor de extrusión [m]",
+                  "value": 0.25,
+                  "exclusiveMin": 0,
+                  "translations": {
+                    "en": "Extrusion thickness [m]",
+                    "pt": "Espessura de extrusão [m]"
+                  }
+                },
+                "discretization_length": {
+                  "kind": "number",
+                  "label": "Separación de puntos [m]",
+                  "value": 0.1,
+                  "exclusiveMin": 0,
+                  "optional": true,
+                  "translations": {
+                    "en": "Point spacing [m]",
+                    "pt": "Espaçamento entre pontos [m]"
+                  }
+                }
+              },
+              "particles": {
+                "particles": {
+                  "kind": "object",
+                  "label": "Partículas",
+                  "fields": {
+                    "id": {
+                      "kind": "list",
+                      "label": "Identificadores",
+                      "item": {
+                        "kind": "integer",
+                        "label": "ID",
+                        "value": 1,
+                        "min": 1,
+                        "translations": {
+                          "en": "ID",
+                          "pt": "ID"
+                        }
+                      },
+                      "initial": [
+                        1
+                      ],
+                      "minItems": 1,
+                      "translations": {
+                        "en": "Identifiers",
+                        "pt": "Identificadores"
+                      }
+                    },
+                    "position": {
+                      "kind": "list",
+                      "label": "Posiciones [m]",
+                      "item": {
+                        "kind": "vector",
+                        "label": "Posición",
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "translations": {
+                          "en": "Position",
+                          "pt": "Posição"
+                        }
+                      },
+                      "initial": [
+                        [
+                          0.5,
+                          0.5,
+                          0.5
+                        ]
+                      ],
+                      "minItems": 1,
+                      "translations": {
+                        "en": "Positions [m]",
+                        "pt": "Posições [m]"
+                      }
+                    },
+                    "volume": {
+                      "kind": "list",
+                      "label": "Volúmenes [m³]",
+                      "item": {
+                        "kind": "number",
+                        "label": "Volumen",
+                        "value": 0.001,
+                        "exclusiveMin": 0,
+                        "translations": {
+                          "en": "Volume",
+                          "pt": "Volume"
+                        }
+                      },
+                      "initial": [
+                        0.001
+                      ],
+                      "minItems": 1,
+                      "translations": {
+                        "en": "Volumes [m³]",
+                        "pt": "Volumes [m³]"
+                      }
+                    },
+                    "material_id": {
+                      "kind": "list",
+                      "label": "Materiales",
+                      "item": {
+                        "kind": "integer",
+                        "label": "Material",
+                        "value": 1,
+                        "min": 1,
+                        "reference": "material",
+                        "translations": {
+                          "en": "Material",
+                          "pt": "Material"
+                        }
+                      },
+                      "initial": [
+                        1
+                      ],
+                      "minItems": 1,
+                      "translations": {
+                        "en": "Materials",
+                        "pt": "Materiais"
+                      }
+                    }
+                  },
+                  "translations": {
+                    "en": "Particles",
+                    "pt": "Partículas"
+                  }
+                }
+              },
+              "particles_list": {
+                "file": {
+                  "kind": "string",
+                  "label": "Archivo de partículas",
+                  "value": "",
+                  "file": ".json",
+                  "note": "Lista de objetos con posición, volumen y material_id",
+                  "translations": {
+                    "en": "Particle file",
+                    "pt": "Arquivo de partículas"
+                  },
+                  "noteTranslations": {
+                    "en": "List of objects with position, volume and material_id",
+                    "pt": "Lista de objetos com posição, volume e material_id"
+                  }
+                },
+                "material_id": {
+                  "kind": "integer",
+                  "label": "Material homogéneo",
+                  "value": 1,
+                  "min": 1,
+                  "reference": "material",
+                  "optional": true,
+                  "translations": {
+                    "en": "Homogeneous material",
+                    "pt": "Material homogêneo"
+                  }
+                }
+              },
+              "particles_from_file": {
+                "file": {
+                  "kind": "string",
+                  "label": "Archivo de partículas",
+                  "value": "",
+                  "file": ".json",
+                  "note": "Lista de objetos con posición, volumen y material_id",
+                  "translations": {
+                    "en": "Particle file",
+                    "pt": "Arquivo de partículas"
+                  },
+                  "noteTranslations": {
+                    "en": "List of objects with position, volume and material_id",
+                    "pt": "Lista de objetos com posição, volume e material_id"
+                  }
+                },
+                "material_id": {
+                  "kind": "integer",
+                  "label": "Material homogéneo",
+                  "value": 1,
+                  "min": 1,
+                  "reference": "material",
+                  "optional": true,
+                  "translations": {
+                    "en": "Homogeneous material",
+                    "pt": "Material homogêneo"
+                  }
+                }
+              },
+              "gmsh": {
+                "mesh_file": {
+                  "kind": "string",
+                  "label": "Malla Gmsh",
+                  "value": "",
+                  "file": ".msh",
+                  "note": "",
+                  "translations": {
+                    "en": "Gmsh mesh",
+                    "pt": "Malha Gmsh"
+                  }
+                },
+                "physical_to_material": {
+                  "kind": "map",
+                  "label": "Grupos físicos y materiales",
+                  "item": {
+                    "kind": "integer",
+                    "label": "Material",
+                    "value": 1,
+                    "min": 1,
+                    "reference": "material",
+                    "translations": {
+                      "en": "Material",
+                      "pt": "Material"
+                    }
+                  },
+                  "minItems": 1,
+                  "translations": {
+                    "en": "Physical groups and materials",
+                    "pt": "Grupos físicos e materiais"
+                  }
+                },
+                "particle_distribution": {
+                  "kind": "choice",
+                  "label": "Distribución en elementos",
+                  "value": "barycentric",
+                  "choices": [
+                    "barycentric",
+                    "gaussian"
+                  ],
+                  "optional": true,
+                  "translations": {
+                    "en": "Distribution in elements",
+                    "pt": "Distribuição nos elementos"
+                  }
+                }
+              }
+            },
+            "translations": {
+              "en": "Body",
+              "pt": "Corpo"
+            }
+          },
+          "minItems": 1,
+          "prefix": "cuerpo",
+          "translations": {
+            "en": "Bodies",
+            "pt": "Corpos"
+          }
+        }
+      },
+      "translations": {
+        "en": "Geometry",
+        "pt": "Geometria"
+      }
+    },
+    "loads": {
+      "kind": "object",
+      "label": "Cargas y presiones",
+      "fields": {
+        "nodal_point_load": {
+          "kind": "list",
+          "label": "Cargas nodales · posición y fuerza",
+          "item": {
+            "kind": "pair",
+            "label": "Carga nodal",
+            "value": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ],
+            "translations": {
+              "en": "Nodal load",
+              "pt": "Carga nodal"
+            }
+          },
+          "optional": true,
+          "translations": {
+            "en": "Nodal loads · position and force",
+            "pt": "Cargas nodais · posição e força"
+          }
+        },
+        "load_distributed_box": {
+          "kind": "map",
+          "label": "Fuerza por caja",
+          "item": {
+            "kind": "object",
+            "label": "Carga",
+            "fields": {
+              "point_p1": {
+                "kind": "vector",
+                "label": "Vértice mínimo [m]",
+                "value": [
+                  0,
+                  0,
+                  0
+                ],
+                "translations": {
+                  "en": "Minimum corner [m]",
+                  "pt": "Vértice mínimo [m]"
+                }
+              },
+              "point_p2": {
+                "kind": "vector",
+                "label": "Vértice máximo [m]",
+                "value": [
+                  1,
+                  1,
+                  1
+                ],
+                "translations": {
+                  "en": "Maximum corner [m]",
+                  "pt": "Vértice máximo [m]"
+                }
+              },
+              "load": {
+                "kind": "vector",
+                "label": "Fuerza [N]",
+                "value": [
+                  0,
+                  0,
+                  0
+                ],
+                "translations": {
+                  "en": "Force [N]",
+                  "pt": "Força [N]"
+                }
+              }
+            },
+            "translations": {
+              "en": "Load",
+              "pt": "Carga"
+            }
+          },
+          "optional": true,
+          "prefix": "carga",
+          "translations": {
+            "en": "Force by box",
+            "pt": "Força por caixa"
+          }
+        },
+        "initial_pressure_box": {
+          "kind": "map",
+          "label": "Presión inicial por caja",
+          "item": {
+            "kind": "object",
+            "label": "Presión",
+            "fields": {
+              "point_p1": {
+                "kind": "vector",
+                "label": "Vértice mínimo [m]",
+                "value": [
+                  0,
+                  0,
+                  0
+                ],
+                "translations": {
+                  "en": "Minimum corner [m]",
+                  "pt": "Vértice mínimo [m]"
+                }
+              },
+              "point_p2": {
+                "kind": "vector",
+                "label": "Vértice máximo [m]",
+                "value": [
+                  1,
+                  1,
+                  1
+                ],
+                "translations": {
+                  "en": "Maximum corner [m]",
+                  "pt": "Vértice máximo [m]"
+                }
+              },
+              "pressure": {
+                "kind": "number",
+                "label": "Presión inicial [Pa]",
+                "value": 0,
+                "translations": {
+                  "en": "Initial pressure [Pa]",
+                  "pt": "Pressão inicial [Pa]"
+                }
+              }
+            },
+            "translations": {
+              "en": "Pressure",
+              "pt": "Pressão"
+            }
+          },
+          "optional": true,
+          "phase": 2,
+          "prefix": "presion",
+          "translations": {
+            "en": "Initial pressure by box",
+            "pt": "Pressão inicial por caixa"
+          }
+        },
+        "prescribed_pressure_box": {
+          "kind": "map",
+          "label": "Presión prescrita por caja",
+          "item": {
+            "kind": "object",
+            "label": "Presión",
+            "fields": {
+              "point_p1": {
+                "kind": "vector",
+                "label": "Vértice mínimo [m]",
+                "value": [
+                  0,
+                  0,
+                  0
+                ],
+                "translations": {
+                  "en": "Minimum corner [m]",
+                  "pt": "Vértice mínimo [m]"
+                }
+              },
+              "point_p2": {
+                "kind": "vector",
+                "label": "Vértice máximo [m]",
+                "value": [
+                  1,
+                  1,
+                  1
+                ],
+                "translations": {
+                  "en": "Maximum corner [m]",
+                  "pt": "Vértice máximo [m]"
+                }
+              },
+              "pressure": {
+                "kind": "number",
+                "label": "Presión [Pa]",
+                "value": 0,
+                "translations": {
+                  "en": "Pressure [Pa]",
+                  "pt": "Pressão [Pa]"
+                }
+              }
+            },
+            "translations": {
+              "en": "Pressure",
+              "pt": "Pressão"
+            }
+          },
+          "optional": true,
+          "phase": 2,
+          "prefix": "presion",
+          "translations": {
+            "en": "Prescribed pressure by box",
+            "pt": "Pressão prescrita por caixa"
+          }
+        },
+        "initial_pressure_material": {
+          "kind": "map",
+          "label": "Presión inicial por material",
+          "item": {
+            "kind": "object",
+            "label": "Presión",
+            "fields": {
+              "material": {
+                "kind": "integer",
+                "label": "Material",
+                "value": 1,
+                "min": 1,
+                "reference": "material",
+                "translations": {
+                  "en": "Material",
+                  "pt": "Material"
+                }
+              },
+              "material_id": {
+                "kind": "integer",
+                "label": "Material · compatibilidad del lector",
+                "value": 1,
+                "min": 1,
+                "reference": "material",
+                "translations": {
+                  "en": "Material · reader compatibility",
+                  "pt": "Material · compatibilidade do leitor"
+                }
+              },
+              "pressure": {
+                "kind": "number",
+                "label": "Presión [Pa]",
+                "value": 0,
+                "translations": {
+                  "en": "Pressure [Pa]",
+                  "pt": "Pressão [Pa]"
+                }
+              }
+            },
+            "translations": {
+              "en": "Pressure",
+              "pt": "Pressão"
+            }
+          },
+          "optional": true,
+          "phase": 2,
+          "prefix": "presion",
+          "note": "El lector comprueba material y lee material_id, ambos deben coincidir",
+          "translations": {
+            "en": "Initial pressure by material",
+            "pt": "Pressão inicial por material"
+          },
+          "noteTranslations": {
+            "en": "The reader checks material and reads material_id; both must match",
+            "pt": "O leitor verifica material e lê material_id; ambos devem coincidir"
+          }
+        },
+        "pressure_force_box": {
+          "kind": "map",
+          "label": "Fuerza de presión por caja",
+          "item": {
+            "kind": "object",
+            "label": "Fuerza",
+            "fields": {
+              "point_p1": {
+                "kind": "vector",
+                "label": "Vértice mínimo [m]",
+                "value": [
+                  0,
+                  0,
+                  0
+                ],
+                "translations": {
+                  "en": "Minimum corner [m]",
+                  "pt": "Vértice mínimo [m]"
+                }
+              },
+              "point_p2": {
+                "kind": "vector",
+                "label": "Vértice máximo [m]",
+                "value": [
+                  1,
+                  1,
+                  1
+                ],
+                "translations": {
+                  "en": "Maximum corner [m]",
+                  "pt": "Vértice máximo [m]"
+                }
+              },
+              "pressure_force": {
+                "kind": "vector",
+                "label": "Fuerza [N]",
+                "value": [
+                  0,
+                  0,
+                  0
+                ],
+                "translations": {
+                  "en": "Force [N]",
+                  "pt": "Força [N]"
+                }
+              }
+            },
+            "translations": {
+              "en": "Force",
+              "pt": "Força"
+            }
+          },
+          "optional": true,
+          "phase": 2,
+          "prefix": "presion",
+          "translations": {
+            "en": "Pressure force by box",
+            "pt": "Força de pressão por caixa"
+          }
+        }
+      },
+      "translations": {
+        "en": "Loads and pressures",
+        "pt": "Cargas e pressões"
+      }
+    },
+    "contact": {
+      "kind": "object",
+      "label": "Contacto",
+      "fields": {
+        "contact_manager": {
+          "kind": "object",
+          "label": "Activar contacto entre cuerpos",
+          "fields": {
+            "active": {
+              "kind": "boolean",
+              "label": "Activo",
+              "value": true,
+              "translations": {
+                "en": "Active",
+                "pt": "Ativo"
+              }
+            },
+            "real_distance_correction_coefficient": {
+              "kind": "number",
+              "label": "Corrección de distancia real",
+              "value": -1,
+              "min": -1,
+              "translations": {
+                "en": "Real distance correction",
+                "pt": "Correção de distância real"
+              }
+            }
+          },
+          "optional": true,
+          "translations": {
+            "en": "Enable body contact",
+            "pt": "Ativar contato entre corpos"
+          }
+        },
+        "contact": {
+          "kind": "map",
+          "label": "Pares de contacto",
+          "item": {
+            "kind": "object",
+            "label": "Contacto",
+            "fields": {
+              "id": {
+                "kind": "integer",
+                "label": "Identificador",
+                "value": 1,
+                "min": 1,
+                "translations": {
+                  "en": "Identifier",
+                  "pt": "Identificador"
+                }
+              },
+              "friction": {
+                "kind": "number",
+                "label": "Coeficiente de fricción",
+                "value": 0.3,
+                "min": 0,
+                "translations": {
+                  "en": "Friction coefficient",
+                  "pt": "Coeficiente de atrito"
+                }
+              },
+              "master_id": {
+                "kind": "integer",
+                "label": "Cuerpo maestro",
+                "value": 1,
+                "min": 1,
+                "reference": "body",
+                "translations": {
+                  "en": "Master body",
+                  "pt": "Corpo mestre"
+                }
+              },
+              "slave_id": {
+                "kind": "integer",
+                "label": "Cuerpo esclavo",
+                "value": 2,
+                "min": 1,
+                "reference": "body",
+                "translations": {
+                  "en": "Slave body",
+                  "pt": "Corpo escravo"
+                }
+              },
+              "normal_type": {
+                "kind": "choice",
+                "label": "Normal de contacto",
+                "value": "master",
+                "choices": [
+                  "master",
+                  "slave",
+                  "collinear"
+                ],
+                "translations": {
+                  "en": "Contact normal",
+                  "pt": "Normal de contato"
+                }
+              }
+            },
+            "translations": {
+              "en": "Contact",
+              "pt": "Contato"
+            }
+          },
+          "optional": true,
+          "prefix": "contacto",
+          "translations": {
+            "en": "Contact pairs",
+            "pt": "Pares de contato"
+          }
+        },
+        "terrain_contact": {
+          "kind": "object",
+          "label": "Contacto con superficie STL",
+          "fields": {
+            "active": {
+              "kind": "boolean",
+              "label": "Activo",
+              "value": true,
+              "translations": {
+                "en": "Active",
+                "pt": "Ativo"
+              }
+            },
+            "stl_mesh": {
+              "kind": "string",
+              "label": "Superficie STL",
+              "value": "",
+              "file": ".stl",
+              "note": "",
+              "translations": {
+                "en": "STL surface",
+                "pt": "Superfície STL"
+              }
+            },
+            "friction": {
+              "kind": "number",
+              "label": "Fricción",
+              "value": 0.3,
+              "min": 0,
+              "translations": {
+                "en": "Friction",
+                "pt": "Atrito"
+              }
+            },
+            "distance_threshold": {
+              "kind": "number",
+              "label": "Umbral de distancia [m]",
+              "value": 0,
+              "min": 0,
+              "translations": {
+                "en": "Distance threshold [m]",
+                "pt": "Limite de distância [m]"
+              }
+            },
+            "penalty_contact_active": {
+              "kind": "boolean",
+              "label": "Contacto por penalización",
+              "value": false,
+              "translations": {
+                "en": "Penalty contact",
+                "pt": "Contato por penalidade"
+              }
+            },
+            "penalty_stiffness": {
+              "kind": "number",
+              "label": "Rigidez de penalización",
+              "value": 0,
+              "min": 0,
+              "translations": {
+                "en": "Penalty stiffness",
+                "pt": "Rigidez de penalidade"
+              }
+            }
+          },
+          "optional": true,
+          "translations": {
+            "en": "STL surface contact",
+            "pt": "Contato com superfície STL"
+          }
+        }
+      },
+      "translations": {
+        "en": "Contact",
+        "pt": "Contato"
+      }
+    },
+    "files": {
+      "kind": "object",
+      "label": "Estados y acoplamiento",
+      "fields": {
+        "load_state": {
+          "kind": "boolean",
+          "label": "Cargar estado inicial",
+          "value": false,
+          "translations": {
+            "en": "Load initial state",
+            "pt": "Carregar estado inicial"
+          }
+        },
+        "load_state_file": {
+          "kind": "string",
+          "label": "Archivo de tensiones iniciales",
+          "value": "",
+          "file": ".json",
+          "note": "",
+          "optional": true,
+          "translations": {
+            "en": "Initial stress file",
+            "pt": "Arquivo de tensões iniciais"
+          }
+        },
+        "save_state": {
+          "kind": "boolean",
+          "label": "Guardar estado final",
+          "value": false,
+          "translations": {
+            "en": "Save final state",
+            "pt": "Salvar estado final"
+          }
+        },
+        "save_state_file": {
+          "kind": "string",
+          "label": "Nombre del estado de salida",
+          "value": "particle_stress_data.json",
+          "translations": {
+            "en": "Output state filename",
+            "pt": "Nome do arquivo do estado final"
+          }
+        },
+        "hydro_mechanical_coupling": {
+          "kind": "object",
+          "label": "Acoplamiento hidromecánico unidireccional",
+          "fields": {
+            "enabled": {
+              "kind": "boolean",
+              "label": "Activo",
+              "value": true,
+              "translations": {
+                "en": "Active",
+                "pt": "Ativo"
+              }
+            },
+            "type": {
+              "kind": "choice",
+              "label": "Tipo",
+              "value": "one_way",
+              "choices": [
+                "one_way"
+              ],
+              "translations": {
+                "en": "Type",
+                "pt": "Tipo"
+              }
+            },
+            "pore_pressure_field": {
+              "kind": "string",
+              "label": "Campo de presión de poros",
+              "value": "",
+              "file": ".json",
+              "note": "",
+              "translations": {
+                "en": "Pore pressure field",
+                "pt": "Campo de pressão de poros"
+              }
+            }
+          },
+          "optional": true,
+          "translations": {
+            "en": "One-way hydromechanical coupling",
+            "pt": "Acoplamento hidromecânico unidirecional"
+          }
+        }
+      },
+      "translations": {
+        "en": "States and coupling",
+        "pt": "Estados e acoplamento"
+      }
+    },
+    "earthquake": {
+      "kind": "object",
+      "label": "Sismicidad",
+      "fields": {
+        "earthquake": {
+          "kind": "object",
+          "label": "Registro sísmico",
+          "fields": {
+            "active": {
+              "kind": "boolean",
+              "label": "Activo",
+              "value": true,
+              "translations": {
+                "en": "Active",
+                "pt": "Ativo"
+              }
+            },
+            "file": {
+              "kind": "string",
+              "label": "Registro · t ax ay az",
+              "value": "",
+              "file": ".txt",
+              "note": "Cuatro columnas numéricas: tiempo y aceleraciones en X, Y, Z",
+              "translations": {
+                "en": "Record · t ax ay az",
+                "pt": "Registro · t ax ay az"
+              },
+              "noteTranslations": {
+                "en": "Four numeric columns: time and accelerations in X, Y, Z",
+                "pt": "Quatro colunas numéricas: tempo e acelerações em X, Y, Z"
+              }
+            },
+            "header": {
+              "kind": "boolean",
+              "label": "Primera línea de encabezado",
+              "value": true,
+              "translations": {
+                "en": "Header in the first line",
+                "pt": "Cabeçalho na primeira linha"
+              }
+            }
+          },
+          "optional": true,
+          "translations": {
+            "en": "Seismic record",
+            "pt": "Registro sísmico"
+          }
+        }
+      },
+      "translations": {
+        "en": "Seismicity",
+        "pt": "Sismicidade"
+      }
+    },
+    "results": {
+      "kind": "object",
+      "label": "Resultados",
+      "fields": {
+        "results": {
+          "kind": "object",
+          "label": "Archivos de salida",
+          "fields": {
+            "print": {
+              "kind": "integer",
+              "label": "Intervalos de salida",
+              "value": 20,
+              "min": 1,
+              "translations": {
+                "en": "Output intervals",
+                "pt": "Intervalos de saída"
+              }
+            },
+            "keep_previous": {
+              "kind": "boolean",
+              "label": "Conservar resultados anteriores",
+              "value": true,
+              "translations": {
+                "en": "Keep previous results",
+                "pt": "Manter resultados anteriores"
+              }
+            },
+            "material_point_results": {
+              "kind": "list",
+              "label": "Campos de partículas",
+              "item": {
+                "kind": "choice",
+                "label": "Campo",
+                "value": "all",
+                "choices": [
+                  "all",
+                  "none",
+                  "id",
+                  "body",
+                  "material",
+                  "mass",
+                  "active",
+                  "displacement",
+                  "velocity",
+                  "stress",
+                  "plastic_strain",
+                  "pressure",
+                  "pore_pressure",
+                  "external_force",
+                  "distance_levelset",
+                  "particle_contact_flag",
+                  "particle_contact_force",
+                  "particle_contact_force_normal",
+                  "particle_contact_force_tangential",
+                  "Su"
+                ],
+                "translations": {
+                  "en": "Field",
+                  "pt": "Campo"
+                }
+              },
+              "initial": [
+                "all"
+              ],
+              "minItems": 1,
+              "translations": {
+                "en": "Particle fields",
+                "pt": "Campos de partículas"
+              }
+            },
+            "grid_nodal_results": {
+              "kind": "list",
+              "label": "Campos de nodos",
+              "item": {
+                "kind": "choice",
+                "label": "Campo",
+                "value": "none",
+                "choices": [
+                  "all",
+                  "none",
+                  "id",
+                  "active",
+                  "mass",
+                  "volume",
+                  "velocity",
+                  "velocity_Slave",
+                  "contact_force",
+                  "density_levelset",
+                  "distance_levelset",
+                  "mass_gradient_vector",
+                  "mass_gradient_vectorL_master",
+                  "mass_gradient_vectorL_slave"
+                ],
+                "translations": {
+                  "en": "Field",
+                  "pt": "Campo"
+                }
+              },
+              "initial": [
+                "none"
+              ],
+              "minItems": 1,
+              "translations": {
+                "en": "Nodal fields",
+                "pt": "Campos de nós"
+              }
+            },
+            "stl_contact_mesh": {
+              "kind": "list",
+              "label": "Campos de contacto STL",
+              "item": {
+                "kind": "choice",
+                "label": "Campo",
+                "value": "none",
+                "choices": [
+                  "all",
+                  "none",
+                  "stl_density_levelset",
+                  "stl_normal"
+                ],
+                "translations": {
+                  "en": "Field",
+                  "pt": "Campo"
+                }
+              },
+              "initial": [
+                "none"
+              ],
+              "minItems": 1,
+              "translations": {
+                "en": "STL contact fields",
+                "pt": "Campos de contato STL"
+              }
+            }
+          },
+          "translations": {
+            "en": "Output files",
+            "pt": "Arquivos de saída"
+          }
+        }
+      },
+      "translations": {
+        "en": "Results",
+        "pt": "Resultados"
+      }
+    }
+  }
+}
